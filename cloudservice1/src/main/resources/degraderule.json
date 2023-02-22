@@ -1,0 +1,12 @@
+[
+  {
+    "resource": "sayHello",
+    "limitApp": "default",
+    "grade": 0,
+    "count": 70,
+    "slowRatioThreshold": 0.5,
+    "minRequestAmount": 5,
+    "statIntervalMs": 1000,
+    "timeWindow": 10
+  }
+]

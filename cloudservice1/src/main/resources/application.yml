@@ -1,0 +1,38 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: cloud-service-1
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    sentinel:
+      #解决升级后，启动循环依赖报错问题
+      filter:
+        enabled: false
+      transport:
+        dashboard: localhost:8858
+        heartbeat-interval-ms: 500
+      eager: true
+      datasource:
+        ds1:
+          file:
+            file: classpath:degraderule.json
+            dataType: json
+            ruleType: degrade
+
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/spring_batch?serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  batch:
+    jdbc:
+      initialize-schema: always #初始化
+
+logging:
+#  config: classpath:log4j.xml
+  config: classpath:logback.xml
