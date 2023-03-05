@@ -2,6 +2,9 @@ server:
   port: 8081
 
 spring:
+  profiles:
+    active: dev
+  #application
   application:
     name: cloud-service-1
   cloud:
@@ -22,17 +25,26 @@ spring:
             file: classpath:degraderule.json
             dataType: json
             ruleType: degrade
-
-
-  datasource:
-    url: jdbc:mysql://localhost:3306/spring_batch?serverTimezone=UTC
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
   batch:
     jdbc:
+      platform: mysql
       initialize-schema: always #初始化
 
+  datasource:
+    db1:
+      jdbc-url: jdbc:mysql://localhost:3306/spring_batch?serverTimezone=GMT%2B8
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    db2:
+      jdbc-url: jdbc:mysql://localhost:3306/new_schema?serverTimezone=GMT%2B8
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+
+
 logging:
-#  config: classpath:log4j.xml
+  #  config: classpath:log4j.xml
   config: classpath:logback.xml

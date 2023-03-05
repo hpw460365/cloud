@@ -26,20 +26,21 @@ public class DemoController {
 
     @GetMapping("/getuserinfo")
     @ResponseBody
-    public String getName(){
+    public String getName() {
+
         RequestInfo info = new RequestInfo();
         info.setPassword("password");
         HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.APPLICATION_XML);
         HttpEntity<RequestInfo> entity = new HttpEntity<RequestInfo>(info, header);
-        String username =  restTemplate.postForObject("http://cloud-service-2/getusername", entity, String.class);
+        String username = restTemplate.postForObject("http://cloud-service-2/getusername", entity, String.class);
         return username;
     }
 
     @GetMapping("/gettestname")
     @ResponseBody
     public String getTestName(){
-        return "testName";
+        return "testNam16";
     }
 
 

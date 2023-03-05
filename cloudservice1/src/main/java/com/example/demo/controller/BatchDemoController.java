@@ -33,5 +33,7 @@ public class BatchDemoController {
         JobParameters p = new JobParametersBuilder().addDate("date", new Date()).toJobParameters();
 //        JobParameters p = new JobParametersBuilder().addString("NoChange", "NoChange").toJobParameters();
         jobLauncher.run(job, p);
+        JobParameters p2 = new JobParametersBuilder().addDate("date", new Date()).toJobParameters();
+        jobLauncher.run(job, p2);
     }
 }

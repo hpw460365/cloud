@@ -5,15 +5,43 @@
     <!-- logger.trace("msg") -->
     <property name = "log.level" value= "debug"></property>
     <property name = "log.maxHistory" value= "30"></property>
-    <property name = "log.filePath" value= "${catalina.base}/logs/webapps"/>
-    <property name = "log.pattern" value= "%d{yyyy-MM-dd HH:mm} [%thread] %-5level %logger{55} -
-				%msg%n"></property>
+    <property name = "log.filePath" value= "./log"/>
+    <property name = "log.pattern" value= "%d{yyyy-MM-dd HH:mm:SSS} [%thread] %-5level %logger{55} - %msg%n"></property>
+    <property name="encode" value="UTF-8"></property>
     <!-- 控制台设置  -->
     <appender name = "consoleAppender" class = "ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${log.pattern}</pattern>
         </encoder>
     </appender>
+
+    <!-- INFO -->
+    <appender name = "infoAppender" class ="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 文件路径  -->
+        <file> ${log.filePath}/info.log</file>
+        <rollingPolicy class = "ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 文件名称 -->
+            <fileNamePattern>${log.filePath}/%d{yyy-MM-dd}-info/info.%d{yyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- 文件最大保存历史数量 -->
+            <maxHistory>${log.maxHistory}</maxHistory>
+            <!-- 文件最大大小 -->
+            <maxFileSize>5KB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+            <charset>${encode}</charset>
+        </encoder>
+        <!--只输出INFO-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!--过滤 INFO-->
+            <level>INFO</level>
+            <!--匹配到就禁止-->
+            <onMatch>ACCEPT</onMatch>
+            <!--没有匹配到就允许-->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
     <!-- DEBUG -->
     <appender name = "debugAppender" class ="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 文件路径  -->
@@ -30,27 +58,7 @@
         <filter class = "ch.qos.logback.classic.filter.LevelFilter">
             <level>DEBUG</level>
             <onMatch>ACCEPT</onMatch>
-            <onMatch>DENY</onMatch>
-        </filter>
-    </appender>
-
-    <!-- INFO -->
-    <appender name = "infoAppender" class ="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- 文件路径  -->
-        <file> ${log.filePath}/info.log</file>
-        <rollingPolicy class = "ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 文件名称 -->
-            <fileNamePattern>${log.filePath}/info/info.%d{yyy-MM-dd}.log.gz</fileNamePattern>
-            <!-- 文件最大保存历史数量 -->
-            <maxHistory>${log.maxHistory}</maxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>${log.pattern}</pattern>
-        </encoder>
-        <filter class = "ch.qos.logback.classic.filter.LevelFilter">
-            <level>INFO</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMatch>DENY</onMatch>
+            <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
 
@@ -70,15 +78,17 @@
         <filter class = "ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
             <onMatch>ACCEPT</onMatch>
-            <onMatch>DENY</onMatch>
+            <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
-<!--    <logger name = "com.test.myo2o" level = "${log.level}" additivity = "true">-->
+<!--    <logger name = "com.example.demo" level = "${log.level}" additivity = "true">-->
 <!--        <appender-ref ref = "debugAppender"></appender-ref>-->
 <!--        <appender-ref ref = "infoAppender"></appender-ref>-->
 <!--        <appender-ref ref = "errorAppender"></appender-ref>-->
 <!--    </logger>-->
-    <root level = "info">
+    <root level="info">
+        <appender-ref ref = "infoAppender"></appender-ref>
+        <appender-ref ref = "debugAppender"></appender-ref>
         <appender-ref ref = "consoleAppender"></appender-ref>
     </root>
 </configuration>
